@@ -47,10 +47,13 @@ here data1 is the data, and data2 is the function to convolve with.
 
 namespace meromorph {
 
+void copyTo(std::valarray<cx32> &buffer,float32 *in);
+
 class Hilbert {
 private:
 	uint32 N;
-	uint32 hilbertN;
+
+	uint32 nStages;
 public:
 	std::valarray<cx32> hilbert;
 	std::valarray<cx32> buffer;
@@ -60,13 +63,11 @@ public:
 
 
 	Hilbert(const uint32 N_);
-
 	virtual ~Hilbert() = default;
 
 	void reset();
-	void apply(std::valarray<cx32> &real);
-
-
+	void apply(const std::valarray<cx32> &,std::valarray<cx32> &);
+	uint32 delay() const { return nStages; }
 };
 
 }
