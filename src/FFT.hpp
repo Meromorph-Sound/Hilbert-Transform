@@ -10,7 +10,7 @@
 
 //#include "base.hpp"
 #include <complex>
-#include <valarray>
+#include <vector>
 
 namespace meromorph {
 
@@ -24,12 +24,13 @@ namespace cx {
 	inline cx32 Zero = cx32();
 	inline cx32 I = cx32(0,1);
 	inline cx32 One = cx32(1);
+	inline cx32 Sqr2 = cx32(sqrt(2.f));
 }
 
 class FFT {
 public:
-	static void fft(std::valarray<cx32> &buffer);
-	static void ifft(std::valarray<cx32> &buffer);
+	static void fft(std::vector<cx32> &buffer);
+	static void ifft(std::vector<cx32> &buffer);
 };
 
 } /* namespace meromorph */

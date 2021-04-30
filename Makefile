@@ -30,6 +30,9 @@ OBJ := $(call makeObjs,$(SRCDIR))
 
 run: $(APP)
 	./$(APP)
+	
+.PHONY: obj
+obj:	$(OBJ)
 
 .PHONY: app
 app:    $(APP)

@@ -14,6 +14,7 @@
 int main(const int argc,const char **argv) {
 
 	try {
+		std::cout << " HX, HY, DX, DY" << std::endl;
 		//std::cerr << "Creating instance of Hilbert" << std::endl;
 		meromorph::Hilbert h(64);
 
@@ -23,18 +24,23 @@ int main(const int argc,const char **argv) {
 		//	std::cout << i << " , " << z.real() << " , " << z.imag()  << std::endl;
 		//}
 
-		std::valarray<meromorph::cx32> ins(meromorph::cx::Zero,64);
-		std::valarray<meromorph::cx32> outs(meromorph::cx::Zero,64);
+		std::vector<meromorph::cx32> ins(64);
+		std::vector<meromorph::cx32> outs(64);
 
-		for(auto segment = 0;segment<5;segment++) {
+		auto freq = 1000.f;
+		auto angular = 2.f*meromorph::Pi/freq;
+
+		for(auto segment = 0;segment<100;segment++) {
 			auto start = 64*segment;
-			for(auto i=0;i<64;i++) ins[i] = meromorph::cx32(cos((start+i)*0.1f));
+			for(auto i=0;i<64;i++) ins[i] = meromorph::cx32(cos((start+i)*angular));
 
 			h.apply(ins,outs);
 
 			for(auto i=0;i<outs.size();i++) {
+				auto r=std::real(ins[i]);
 				auto z=outs[i];
-				std::cout << (i+start) << " , " << z.real() << " , " << z.imag()  << std::endl;
+				auto t = (i+start)*angular;
+				std::cout << t << ", " << r << " , " << z.real() << " , " << z.imag()  << std::endl;
 			}
 		}
 

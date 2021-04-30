@@ -6,10 +6,11 @@
  */
 
 #include "FFT.hpp"
+#include <algorithm>
 
 namespace meromorph {
 
-void FFT::fft(std::valarray<cx32> &buffer) {
+void FFT::fft(std::vector<cx32> &buffer) {
 			// DFT
 		uint32 N=buffer.size();
 		auto k = N;
@@ -55,12 +56,15 @@ void FFT::fft(std::valarray<cx32> &buffer) {
 
 	}
 
-void FFT::ifft(std::valarray<cx32> &buffer)
+
+void FFT::ifft(std::vector<cx32> &buffer)
 	{
-		buffer.apply(std::conj);
-		fft(buffer);
-		buffer.apply(std::conj);
-		buffer /= cx32(buffer.size());
+	std::transform(buffer.begin(),buffer.end(),buffer.begin(),[](cx32 z) { return std::conj(z);});
+	fft(buffer);
+	auto s = sqrt(cx32(buffer.size()));
+	std::transform(buffer.begin(),buffer.end(),buffer.begin(),[s](cx32 z) { return std::conj(z)/s;});
 	}
+
+
 
 } /* namespace meromorph */
