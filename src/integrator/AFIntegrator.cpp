@@ -63,12 +63,9 @@ void Simpson38Integrator::reset() {
 
 using iterator=CircularBuffer<float>::iterator;
 
-Integrator::Integrator(const Integrator &other) : integral(other.integral),
-		delta(other.delta), capacity(other.capacity), data(other.data), pattern(other.pattern) {};
 
 
-
-Integrator::Integrator(const float delta_,size_t capacity_,const float *array) : integral(),
+Integrator::Integrator(const float delta_,size_t capacity_,const float *array) : integral(0.0f),
 		delta(delta_), capacity(capacity_), data(capacity), pattern(capacity) {
 	for(auto i=0;i<capacity;i++) pattern[i]=array[i];
 };

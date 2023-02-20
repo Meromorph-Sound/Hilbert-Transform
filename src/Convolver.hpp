@@ -9,7 +9,7 @@
 #define CONVOLVER_HPP_
 
 #include <cmath>
-#include <valarray>
+#include <vector>
 //#include "base.hpp"
 #include "FFT.hpp"
 
@@ -54,9 +54,9 @@ private:
 
 	uint32 nStages;
 public:
-	std::vector<cx32> hilbert;
-	std::vector<cx32> buffer;
-	std::vector<cx32> tmp;
+	cvec hilbert;
+	cvec buffer;
+	cvec tmp;
 
 	void makeHilbertKernel();
 
@@ -65,8 +65,10 @@ public:
 	virtual ~Hilbert() = default;
 
 	void reset();
-	void apply(const std::vector<cx32> &,std::vector<cx32> &);
+	void apply(const cvec &,cvec &);
 	uint32 delay() const { return nStages; }
+
+	void fir(cvec &);
 };
 
 }

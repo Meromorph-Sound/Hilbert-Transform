@@ -22,9 +22,7 @@ void Hilbert::makeHilbertKernel() {
 		hilbert[nStages-i] = -value;
 	}
 
-	for(auto it=hilbert.begin();it!=hilbert.end();it++) {
-		std::cout << std::real(*it) << " , " << std::imag(*it) << std::endl;
-	}
+
 
 	FFT::fft(hilbert);
 }
@@ -36,7 +34,10 @@ Hilbert::Hilbert(const uint32 N_) : N(N_), nStages((N-1)/2), hilbert(2*N), buffe
 	makeHilbertKernel();
 }
 
-
+void Hilbert::fir(cvec &vec) {
+	//vec.assign(hilbert.size(),cx::Zero);
+	std::copy(hilbert.begin(),hilbert.end(),vec.begin());
+}
 
 void Hilbert::reset() {
 	std::fill(buffer.begin(),buffer.end(),0.f);

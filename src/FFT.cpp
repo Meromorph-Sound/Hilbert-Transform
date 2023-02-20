@@ -56,6 +56,12 @@ void FFT::fft(std::vector<cx32> &buffer) {
 
 	}
 
+void FFT::rfft(const rvec &in,std::vector<cx32> &buffer) {
+	std::transform(in.begin(),in.end(),buffer.begin(),[](float32 x) { return cx32(x); });
+	fft(buffer);
+
+}
+
 
 void FFT::ifft(std::vector<cx32> &buffer)
 	{
@@ -65,6 +71,11 @@ void FFT::ifft(std::vector<cx32> &buffer)
 	std::transform(buffer.begin(),buffer.end(),buffer.begin(),[s](cx32 z) { return std::conj(z)/s;});
 	}
 
-
+void FFT::rifft(std::vector<float32> &out,std::vector<cx32> &buffer) {
+	auto half=buffer.size()/2;
+	for(auto i=1;i<half;i++) { buffer[half+i]=std::conj(buffer[half-i]); }
+	ifft(buffer);
+	std::transform(buffer.begin(),buffer.end(),out.begin(),[](cx32 z) { return z.real(); });
+}
 
 } /* namespace meromorph */

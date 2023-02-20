@@ -28,6 +28,7 @@ public:
 	using iterator = T*;
 	using const_iterator = const T*;
 
+	CircularBuffer() : N(0), offset(0), values(nullptr) {}
 	CircularBuffer(const unsigned N_,const T def) : N(N_), offset(0) {
 		values = new T[2*N];
 		for(auto i=0;i<2*N;i++) values[i]=def;

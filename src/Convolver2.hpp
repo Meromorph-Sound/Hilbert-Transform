@@ -10,38 +10,74 @@
 
 #include "FFT.hpp"
 #include <vector>
+#include <iostream>
+
+
 
 namespace meromorph {
 
-/*
-class BlockCircularBuffer {
+class OverlapSave {
 private:
-	uint32 blockSize;
-	uint32 nBlocks;
-	std::vector<float32> buffer;
+	//std::vector<float32> fir;
+	uint32 nFIR;
 
-	uint32 offsetFor(const uint32 b) {
-		return (blockSize*b) % buffer.size();
-	}
+	uint32 blockSize;
+	uint32 nFFT;
+	uint32 offset;
+
+	cvec firBuffer;
+
+	cvec buffer;
+	rvec yt;
+	rvec xs;
+
+
+
+
 
 
 public:
-	using iterator=std::vector<float32>::iterator;
 
-	BlockCircularBuffer(const uint32 nB,const uint32 s) : blockSize(s), nBlocks(nB), buffer(blockSize*nBlocks) {};
-	virtual ~BlockCircularBuffer() = default;
+	OverlapSave() : nFIR(0), blockSize(0), nFFT(0), offset(0),  firBuffer(), buffer(), yt(), xs() {};
+	OverlapSave(const rvec &v,const uint32 fftsize,const uint32 block);
+	OverlapSave(const rvec &v,const uint32 block);
+	OverlapSave(cvec &v,const uint32 fftsize,const uint32 block);
+	OverlapSave(cvec &v,const uint32 block);
+	virtual ~OverlapSave() = default;
 
-	iterator begin(const uint32 block) {
-		return buffer.begin() + offsetFor(block);
-	}
-	iterator end(const uint32 block) {
-		auto o=offsetFor(block);
-		return (o==0) ? buffer.end() : buffer.begin() + o;
-	}
-
+	void operator()(std::vector<float32> &vec);
+	void reset() { xs.assign(nFFT,0); }
 };
-class Convolver2 {
+
+class OverlapAdd {
+private:
+
+	uint32 M;
+
+	uint32 L;
+	uint32 N;
+	uint32 offset;
+
+	std::vector<cx32> firBuffer;
+
+	std::vector<cx32> buffer;
+	std::vector<float32> yt;
+	std::vector<float32> outs;
+
+
+
+
+
+public:
+
+	OverlapAdd() : M(0), L(0), N(0), offset(0),  firBuffer(), buffer(), yt(), outs() {};
+	OverlapAdd(const std::vector<cx32> &v,const uint32 block);
+	virtual ~OverlapAdd() = default;
+
+	void operator()(std::vector<float32> &vec);
+	void reset() { };
 };
-*/
+
+
 }
 #endif /* CONVOLVER2_HPP_ */
